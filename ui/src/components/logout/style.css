@@ -1,0 +1,7 @@
+.logout-container {
+    position: absolute;
+    width: 40%;
+    top: 40%;
+    align-self: center;
+    border: 1px black solid;
+}

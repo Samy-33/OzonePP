@@ -1,0 +1,15 @@
+.index-body {
+	padding-bottom: 5em;
+}
+
+.footer {
+	background: rgb(0, 0, 0);
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 5em;
+	text-align: center;
+	padding-top: 2em;
+	color: grey;
+	font-weight: bold;
+}
