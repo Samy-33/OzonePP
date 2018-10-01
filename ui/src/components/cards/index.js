@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardImg, CardTitle,
   CardText, CardBody, Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import './style.css';
 
 const defaultCardImgSrc = 'https://increasify.com.au/wp-content/uploads/2016/08/default-image.png';
@@ -13,9 +14,9 @@ export const PrettyCard = (props) => {
         <CardBody>
           <CardTitle> {props.title} </CardTitle>
           <CardText> {props.text} </CardText>
-          <a href={props.buttonLink}>
+          <Link to={props.buttonLink}>
             <Button color={props.buttonColor} size="md" block> {props.buttonText} </Button>
-          </a>
+          </Link>
         </CardBody>
       </Card>
     </div>

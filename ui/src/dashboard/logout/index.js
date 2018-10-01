@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
-import { Redirect } from 'react-router-dom';
+import { Button, Row, Col } from 'reactstrap';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { requestLogout } from '../../reducers/auth/auth.act';
 import './style.css';
@@ -13,9 +13,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        logout: () => dispatch(requestLogout())
-    }
-}
+        logout: () => requestLogout()(dispatch)
+    };
+};
 
 class ConnectedLogout extends Component {
     
@@ -31,23 +31,33 @@ class ConnectedLogout extends Component {
     };
 
     render () {
-        console.log(this.props.isLoggedIn);
         if(!this.props.isLoggedIn) return <Redirect to="/" />;
 
         return (
             <div className="logout-container">
                 <h3><b>Are you sure about logging out?</b></h3>
                 <br />
-                <div style={{'float': 'right'}}>
-                    <Button
-                        color="success"
-                        size="lg"
-                        onClick={this.handleLogout}
-                    >
-                        Yes
-                    </Button>
-                    <Button color="danger" size="lg">Go Back</Button>
-                </div>
+                <Row>
+                    <Col>
+                        <Button
+                            className="logout-button"
+                            color="success"
+                            size="lg"
+                            onClick={this.handleLogout}
+                        >
+                            Yes
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Link to="/">
+                            <Button className="logout-button"
+                                    color="danger"
+                                    size="lg">
+                                Take me home
+                            </Button>
+                        </Link>
+                    </Col>
+                </Row>
             </div>
         );
     };

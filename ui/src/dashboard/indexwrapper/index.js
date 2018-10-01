@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { NavBar } from '../../components/navbar';
 import { Home } from '../home';
-import { Login } from '../../components/login';
-import { Logout } from '../../components/logout';
+import { Login } from '../login';
+import { Logout } from '../logout';
+import { Signup } from '../signup';
 import { BrowserRouter, Route } from 'react-router-dom';
+import ReactLoading from 'react-loading';
 import { validateToken } from '../../reducers/auth/auth.act';
 import { connect } from 'react-redux';
 import './style.css';
@@ -18,8 +20,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 }
 
-
-
 class ConnectedIndex extends Component {
 
     componentDidMount () {
@@ -29,15 +29,29 @@ class ConnectedIndex extends Component {
     }
 
     render () {
+
+        let body = (
+            <div className="index-body">
+                <Route exact path="/" component={Home} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/logout" component={Logout} />
+                <Route exact path="/signup" component={Signup} />
+            </div>
+        );
+
+        if(this.props.loginThrobber) {
+            body = (
+                <div className="login-throbber">
+                    <ReactLoading type="spinningBubbles" color="#000"></ReactLoading>
+                </div>
+            );
+        }
+
         return (                
             <BrowserRouter>
                 <div className="application-container">
                     <NavBar />
-                    <div className="index-body">
-                        <Route exact path="/" component={Home} />
-                        <Route exact path="/login" component={Login} />
-                        <Route exact path="/logout" component={Logout} />
-                    </div>
+                    {body}
                     <div className="footer">
                         Made with love at IIITDMJ
                     </div>

@@ -1,0 +1,11 @@
+.login-throbber {
+    position: absolute;
+    top: 40%;
+    right: 50%;
+}
+
+.signup-form-container {
+    width: 30%;
+    margin-top: 5%;
+    padding-bottom: 5em;
+};

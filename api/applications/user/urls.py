@@ -9,6 +9,6 @@ app_name = 'user'
 urlpatterns = [
     path('', ListUsersView.as_view()),
     path('login/', BasicLoginView.as_view()),
-    path('register/', RegistrationView.as_view(), name='create_user'),
+    path('signup/', RegistrationView.as_view(), name='create_user'),
     path('check-token/', TokenCheckView.as_view(), name='check-token')
 ]

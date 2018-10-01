@@ -1,9 +1,8 @@
 import { 
     LOGIN_SUCCESS, LOGIN_FAILED, TOKEN_VALIDATION_SUCCESS,
-    TOKEN_VALIDATION_FAILED, REQUEST_LOGOUT,
+    TOKEN_VALIDATION_FAILED, REQUEST_LOGOUT, SIGNUP_SUCCESS, SIGNUP_FAILED, AUTH_SUCCESS, AUTH_FAILED,
 } from './auth.const';
 import $ from './auth.srv';
-
 
 export const requestLogin = (loginCredentials) => {
     return dispatch => {
@@ -13,15 +12,15 @@ export const requestLogin = (loginCredentials) => {
         
         $.authService.logInUser(username, password)
             .then(response => {
-                if(response.status === 'Success') {
-                    dispatch(loginSuccess(response));
+                if(response.status === AUTH_SUCCESS) {
+                    dispatch(loginSuccess(response.data));
                 } else {
                     dispatch(loginFailed(response.errors))
                 }
             })
             .catch(err => {
-                console.log(err);
-            })
+                console.log(`${__dirname}/auth.act.js :: requestLogin - ${err}`);
+            });
     };
 };
 
@@ -30,21 +29,20 @@ export const loginSuccess = (userData) => {
         type: LOGIN_SUCCESS,
         payload: userData
     };
-}
+};
 
 export const loginFailed = (errors) => {
     return {
         type: LOGIN_FAILED,
         payload: errors
     };
-}
+};
 
 
 export const validateToken = () => {
     return dispatch => {
         $.authService.validateAuthToken()
             .then(response => {
-                console.log(response);
                 if(response.isValid) {
                     dispatch(tokenValidationSuccess(response));
                 } else {
@@ -53,7 +51,7 @@ export const validateToken = () => {
             })
             .catch(err => {
                 console.log(`${__dirname}/auth.act.js :: validateToken - ${err}`);
-            })
+            });
     };
 };
 
@@ -72,7 +70,48 @@ export const tokenValidationFailed = response => {
 };
 
 export const requestLogout = () => {
-    return {
-        type: REQUEST_LOGOUT,
+    return dispatch => {
+        $.authService.logoutUser()
+            .then(() => {
+                dispatch(logoutUser());
+            });
     };
 };
+
+export const logoutUser = () => {
+    return { type: REQUEST_LOGOUT };
+};
+
+export const requestSignUp = userData => {
+    return dispatch => {
+        console.log(userData);
+        $.authService.signUp(userData)
+            .then(response => {
+                if(response instanceof Error) {
+                    // TODO: no not throw error dispatch some action to handle the error
+                    throw response;
+                }
+
+                if(response.status === AUTH_FAILED) {
+                    dispatch(signupFailed(response.errors));
+                } else {
+                    dispatch(signupSuccess(response.data));
+                }
+
+            });
+    };
+};
+
+export const signupSuccess = response => {
+    return {
+        type: SIGNUP_SUCCESS,
+        payload: response
+    };
+};
+
+export const signupFailed = errors => {
+    return {
+        type: SIGNUP_FAILED,
+        payload: errors
+    };
+}

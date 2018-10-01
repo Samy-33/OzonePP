@@ -1,0 +1,13 @@
+.logout-container {
+    position: absolute;
+    width: 60%;
+    top: 30%;
+    left: 20%;
+    padding: 2em 2em 2em 1em;
+    border: 1px black solid;
+}
+
+.logout-button {
+    width: 100%;
+    text-decoration: None;
+}

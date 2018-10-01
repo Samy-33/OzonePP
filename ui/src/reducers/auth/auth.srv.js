@@ -1,8 +1,11 @@
 import { AuthUtils } from './auth.util';
-import { postLoginRequest, validateTokenRequest } from '../../api/index';
+import { 
+    postLoginRequest, validateTokenRequest,
+    postLogoutRequest, postSignupRequest
+} from '../../api/index';
+import { CONTENT_TYPE_JSON } from './auth.const';
+import { AUTH_SUCCESS, AUTH_FAILED } from './auth.const';
 
-const AUTH_SUCCESS = 'Success';
-const AUTH_FAILED = 'Failed';
 
 class Auth {
 
@@ -45,14 +48,12 @@ class Auth {
                     return {
                         'status': AUTH_FAILED,
                         'errors': {...response},
-                        'message': 'Invalid Credentials'
                     };
                 }
-                console.log(response);
                 AuthUtils.setAuthToken(response.token);
                 return {
                     'status': AUTH_SUCCESS,
-                    ...response
+                    'data': {...response}
                 };
             })
             .catch(err => {
@@ -64,6 +65,44 @@ class Auth {
         
         return tokenData;
     };
+
+    /**
+     * 
+     */
+    static async logoutUser () {
+        let headers = AuthUtils.getJsonHeaderWithAuthToken();
+
+        return postLogoutRequest(headers)
+                .catch(err => {
+                    console.log(`${__dirname}/auth.srv.js :: logoutUser : ${err}`);
+                    return err;
+                });
+    };
+
+    static async signUp (userData) {
+        let headers = { ...CONTENT_TYPE_JSON };
+
+        return postSignupRequest(headers, userData)
+                .then(response => {
+                    if(!response.token) {
+                        return {
+                            status: AUTH_FAILED,
+                            errors: {...response}
+                        };
+                    } else {
+                        return {
+                            status: AUTH_SUCCESS,
+                            data: {...response}
+                        }
+                    }
+                    
+                })
+                .catch(err => {
+                    console.log(`${__dirname}/auth.srv.js :: signUp : ${err}`);
+                    return err;
+                })
+
+    }
 };
 
 export default {

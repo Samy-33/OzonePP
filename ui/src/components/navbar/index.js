@@ -32,16 +32,24 @@ class ConnectedNavBar extends Component {
 
   render () {
 
-    let componentDependsOnLogin = (<Nav navbar><NavItem>
-        <NavLink to="/login" tag={RouteNavLink}>Login</NavLink>
-      </NavItem></Nav>);
+    let componentDependsOnLogin = (
+      <Nav navbar>
+        <NavItem>
+          <NavLink to="/login" tag={RouteNavLink}>Login</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink to="/signup" tag={RouteNavLink}>Signup</NavLink>
+        </NavItem>
+      </Nav>
+    );
+    
     if(this.props.isLoggedIn) {
       componentDependsOnLogin = (<Nav navbar>
         <NavItem>
-          <NavLink href="/contests">Contests</NavLink>
+          <NavLink to="/contests" tag={RouteNavLink}>Contests</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="/leaderboard">Leaderboard</NavLink>
+          <NavLink to="/leaderboard" tag={RouteNavLink}>Leaderboard</NavLink>
         </NavItem>
         <UncontrolledDropdown nav inNavbar>
           <DropdownToggle nav caret>
@@ -68,7 +76,7 @@ class ConnectedNavBar extends Component {
     return (
       <div>
         <Navbar color="dark" dark expand="md">
-          <NavbarBrand href="/"> Ozone<sup>++</sup> </NavbarBrand>
+          <NavbarBrand to="/" tag={RouteNavLink}> Ozone<sup>++</sup> </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.props.isOpen} navbar>
             <Nav className="mr-auto" />
