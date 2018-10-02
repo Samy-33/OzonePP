@@ -59,3 +59,19 @@ class ListUsersView(APIView):
         users = User.objects.all()
         users_json = UserSerializer(users, many=True)
         return Response(users_json.data)
+
+
+class UserDetailView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permissions_classes = (IsAuthenticated,)
+
+    def get(self, request, username):
+        user = User.objects.filter(username=username)
+        if not user.exists():
+            return Response({
+                'error_message': 'User not found'
+            }, status.HTTP_404_NOT_FOUND)
+
+        user = UserSerializer(user)
+
+        return Response(user.data)

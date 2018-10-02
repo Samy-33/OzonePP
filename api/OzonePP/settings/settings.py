@@ -48,7 +48,8 @@ DEPENDENCY_APPS = [
 ]
 
 PROJECT_APPS = [
-    'applications.user'
+    'applications.user',
+    'applications.contest'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + DEPENDENCY_APPS + PROJECT_APPS
@@ -86,14 +87,6 @@ WSGI_APPLICATION = 'OzonePP.wsgi.application'
 # Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
-}
-
-# JWT Settings
-JWT_AUTH = {
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3000),
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer'
 }
 
 # Database

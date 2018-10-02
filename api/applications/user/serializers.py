@@ -22,13 +22,13 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-    def validate_username(self, username):
-        user_exists = User.objects.filter(username=username).exists()
+    # def validate_username(self, username):
+    #     user_exists = User.objects.filter(username=username).exists()
 
-        if user_exists:
-            raise serializers.ValidationError("Username already exists.")
+    #     if user_exists:
+    #         raise serializers.ValidationError("Username already exists.")
         
-        return username
+    #     return username
 
     def validate_email(self, email):
 
@@ -73,9 +73,7 @@ class LoginUserSerializer(serializers.Serializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    date_joined = serializers.ReadOnlyField()
 
     class Meta(object):
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name',
-                  'date_joined', 'password')
+        exclude = ('password', )

@@ -29,3 +29,7 @@ ui/*.lock.json
 __pycache__
 migrations
 db.sqlite3
+
+.project
+.pydevproject
+.settings
