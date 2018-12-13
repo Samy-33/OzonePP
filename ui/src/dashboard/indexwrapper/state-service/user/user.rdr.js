@@ -2,8 +2,8 @@ import { USER_DETAIL_FAILED, USER_DETAIL_FETCHED } from "./user.const";
 
 const initialState = {
     userData: {},
-    submissionsData: {},
-    contestsData: {},
+    submissionsData: [],
+    contestsData: [],
     detailsThrobber: true,
     submissionsThrobber: true,
 };

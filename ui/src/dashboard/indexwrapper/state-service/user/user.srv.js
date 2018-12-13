@@ -9,6 +9,7 @@ class UserService {
 
         return getUserDetailRequest(headers, username)
             .catch(err => {
+                console.log(err);
                 return {
                     status: USER_DETAIL_FAILED,
                     errors: {...err}

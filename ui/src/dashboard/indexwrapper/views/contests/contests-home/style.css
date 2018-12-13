@@ -1,0 +1,14 @@
+.same-height-main-view {
+    height: 520px;
+    margin: 20px;
+    border: 1px black solid;
+}
+
+.left-submission-column {
+
+}
+
+.right-ongoing-contests {
+    padding: 20px;
+    margin-right: 20px;
+}

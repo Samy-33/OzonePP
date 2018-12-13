@@ -1,6 +1,7 @@
 import { 
     LOGIN_FAILED, LOGIN_SUCCESS,
-    TOKEN_VALIDATION_FAILED, TOKEN_VALIDATION_SUCCESS, REQUEST_LOGOUT, SIGNUP_SUCCESS, SIGNUP_FAILED
+    TOKEN_VALIDATION_FAILED, TOKEN_VALIDATION_SUCCESS, REQUEST_LOGOUT, SIGNUP_SUCCESS, SIGNUP_FAILED,
+    THROBBER_TOGGLE
 } from './auth.const';
 import { RequestUtils } from '../../utils/request.util';
 
@@ -20,7 +21,7 @@ export const authReducer = (state=initialState, action) => {
 
     switch(action.type) {
         case LOGIN_SUCCESS:
-            console.log(action.payload);
+            // console.log(action.payload);
             return {...state, isLoggedIn: true,
                 username: action.payload.username, loginThrobber: false,
                 loginErrors: {}};
@@ -49,6 +50,9 @@ export const authReducer = (state=initialState, action) => {
 
         case SIGNUP_FAILED:
             return {...state, signupErrors: {...action.payload}, loginThrobber: false};
+
+        case THROBBER_TOGGLE:
+        return {...state, loginThrobber: !state.loginThrobber};
 
         default:
             return state;

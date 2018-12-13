@@ -6,6 +6,7 @@ export const requestUserDetails = username => {
     return dispatch => {
         $.userService.getUserDetails(username)
             .then(response => {
+                // console.log(response);
                 if(response.status === USER_DETAIL_FAILED || !response.username) {
                     dispatch(userDetailsLoadFailed({...response}));
                 } else {

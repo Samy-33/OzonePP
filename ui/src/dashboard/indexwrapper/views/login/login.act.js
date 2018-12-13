@@ -1,4 +1,4 @@
-import { AUTH_SUCCESS, LOGIN_SUCCESS, LOGIN_FAILED } from "../../state-service/auth/auth.const";
+import { AUTH_SUCCESS, LOGIN_SUCCESS, LOGIN_FAILED, THROBBER_TOGGLE } from "../../state-service/auth/auth.const";
 import $ from '../../state-service/auth/auth.srv';
 
 
@@ -8,6 +8,8 @@ export const requestLogin = (loginCredentials) => {
         let username = loginCredentials.username;
         let password = loginCredentials.password;
         
+        dispatch({type:THROBBER_TOGGLE });
+
         $.authService.logInUser(username, password)
             .then(response => {
                 if(response.status === AUTH_SUCCESS) {

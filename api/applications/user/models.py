@@ -16,6 +16,10 @@ class User(AbstractUser):
     def color(self):
     	return color_code_from_rating(self.rating)
 
+    @property
+    def full_name(self):
+        return self.get_full_name()
+
 
 class Follower(models.Model):
 	user = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)

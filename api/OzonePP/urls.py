@@ -20,5 +20,6 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('knox.urls')),
-    path('api/user/', include('applications.user.urls', namespace='user'))
+    path('api/user/', include('applications.user.urls', namespace='user')),
+    path('api/contest/', include('applications.contest.urls', namespace='contest'))
 ]

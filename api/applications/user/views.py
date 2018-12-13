@@ -1,4 +1,7 @@
-from applications.user.serializers import CreateUserSerializer, LoginUserSerializer
+from applications.user.serializers import (
+    CreateUserSerializer, LoginUserSerializer,
+    UserSerializer
+)
 from applications.user.models import User
 from knox.auth import TokenAuthentication
 from knox.models import AuthToken
@@ -72,6 +75,10 @@ class UserDetailView(APIView):
                 'error_message': 'User not found'
             }, status.HTTP_404_NOT_FOUND)
 
-        user = UserSerializer(user)
+        fields_to_hide = ''
+        if request.user != user.first():
+            fields_to_hide = 'email'
 
+        user = UserSerializer(user.first(), fields_to_hide=fields_to_hide)
+        # user.is_valid()
         return Response(user.data)

@@ -12,5 +12,5 @@ urlpatterns = [
     path('login/', BasicLoginView.as_view()),
     path('signup/', RegistrationView.as_view(), name='create_user'),
     path('check-token/', TokenCheckView.as_view(), name='check_token'),
-    path('<username>/', UserDetailView.as_view(), name='get_user')
+    path('detail/<str:username>/', UserDetailView.as_view(), name='get_user')
 ]

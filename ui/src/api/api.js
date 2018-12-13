@@ -3,7 +3,7 @@ import {
   postLogoutRequest, postSignupRequest
 } from './services/auth/auth';
 
-import { getUserDetailRequest } from './services/user/user';
+import { getUserDetailRequest } from './services/user/user-api';
 
 export { postLoginRequest, validateTokenRequest,
   postLogoutRequest, postSignupRequest};

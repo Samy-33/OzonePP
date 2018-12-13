@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavBar } from '../../components/navbar/navbar';
+import { ContestsHome } from './views/contests/contests-home/contest-home';
 import { Home } from './views/home/home';
 import { Login } from './views/login/login';
 import { Logout } from './views/logout/logout';
@@ -35,6 +36,7 @@ class ConnectedIndex extends Component {
         let body = (
             <div className="index-body">
                 <Route exact path="/" component={Home} />
+                <Route exact path="/contests" component={ContestsHome} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/logout" component={Logout} />
                 <Route exact path="/signup" component={Signup} />

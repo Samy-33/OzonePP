@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
+from utils.serializer_utils import DynamicFieldModelSerializer
 from applications.user.models import User
-
 
 class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -72,8 +72,11 @@ class LoginUserSerializer(serializers.Serializer):
         raise serializers.ValidationError('Invalid Credentials Provided')
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(DynamicFieldModelSerializer):
 
-    class Meta(object):
+    class Meta:
         model = User
-        exclude = ('password', )
+        fields = ('username', 'email', 'full_name', 'is_active', 'color',
+            'date_joined', 'rating', 'contribution_rating', 'dp_url', 'institute', 'country')
+        # exclude = ('password', 'id', 'is_superuser',
+        #     'last_login', 'is_staff', 'user_permissions')
