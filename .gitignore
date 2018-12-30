@@ -10,19 +10,16 @@ ui/coverage
 ui/build
 
 # misc
-ui/.DS_Store
-ui/.env.local
-ui/.env.development.local
-ui/.env.test.local
-ui/.env.production.local
+.DS_Store
+.env.*
 
-ui/npm-debug.log*
-ui/yarn-debug.log*
-ui/yarn-error.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 
-ui/*.lock
-ui/*.lock.json
+*.lock
+*.lock.json
 
 
 *.pyc
@@ -33,3 +30,4 @@ db.sqlite3
 .project
 .pydevproject
 .settings
+.vscode
