@@ -1,8 +1,26 @@
 from rest_framework import serializers
-from .models import Contest
+from .models import Contest, ContestRegistration
+from utils.serializer_utils import DynamicFieldModelSerializer
+
+class RegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContestRegistration
+        exclude = ['added_ts']
 
 
-class ContestSerializer(serializers.ModelSerializer):
+class ContestSerializer(DynamicFieldModelSerializer):
+
+    registrations = RegistrationSerializer(many=True, read_only=True)
+    is_registered = serializers.SerializerMethodField()
+
     class Meta:
         model = Contest
-        fields = ['id', 'code', 'name', 'start_time', 'end_time']
+        exclude = ['added_ts']
+
+    def get_is_registered(self, instance):
+        request = self.context.get('request')
+
+        if request and request.user:
+            return instance.registrations.filter(user=request.user).exists()
+        
+        return False

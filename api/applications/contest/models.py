@@ -1,10 +1,12 @@
 from django.db import models
+from django.db.models import Q
+from django.utils import timezone
 from enum import Enum
 from applications.user.models import User
-from applications.contest.constants import ProblemType, PLanguage
+from applications.contest.constants import ProblemType, PLanguage, CodeSubmissionStatusChoice as StatusChoice
 
 
-CODE_MAX_LENGTH = 6
+CODE_MAX_LENGTH = 10
 NAME_MAX_LENGTH = 20
 TEXT_MAX_LENGTH = 500
 RESOURCE_LIMIT_DECIMAL_PLACES = 2
@@ -16,9 +18,32 @@ class Contest(models.Model):
                                 null=True, on_delete=models.SET_NULL)
     code = models.CharField(max_length=CODE_MAX_LENGTH, blank=False, unique=True)
     name = models.CharField(max_length=NAME_MAX_LENGTH, blank=False)
+    description = models.TextField(max_length=TEXT_MAX_LENGTH, blank=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     is_public = models.BooleanField(default=False)
+    added_ts = models.DateTimeField(auto_now=True)
+
+    @staticmethod
+    def get_ongoing_contests_in_queryset(queryset):
+        now = timezone.now()
+        return queryset.filter(Q(start_time__lte=now), Q(end_time__gte=now))
+
+    @staticmethod
+    def get_past_contests_in_queryset(queryset):
+        now = timezone.now()
+        return queryset.filter(Q(end_time__lt=now))
+
+    @staticmethod
+    def get_upcoming_contests_in_queryset(queryset):
+        now = timezone.now()
+        return queryset.filter(Q(start_time__gt=now))
+
+
+class ContestRegistration(models.Model):
+    user = models.ForeignKey(User, related_name='contests_registrations', on_delete=models.CASCADE)
+    contest = models.ForeignKey(Contest, related_name='registrations', on_delete=models.CASCADE)
+    added_ts = models.DateTimeField(auto_now=True)
 
 
 class Tag(models.Model):
@@ -58,14 +83,6 @@ class MCQOption(models.Model):
 
 
 class CodeSubmission(models.Model):
-
-    class StatusChoice(Enum):
-        PENDING = 'pending'
-        COMPILATION_ERROR = 'ce'
-        CORRECT = 'ac'
-        WRONG = 'wa'
-        TIME_LIMIT_EXCEEDED = 'tle'
-        RUN_TIME_ERROR = 'rte'
 
     submittor = models.ForeignKey(User, related_name='code_submisssions', on_delete=models.CASCADE)
     problem = models.ForeignKey(CodeProblem, related_name='submissions', on_delete=models.CASCADE)

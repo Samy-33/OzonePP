@@ -22,7 +22,7 @@
     <title>OzonePP</title>
     <style>
 
-      html {
+      html, body {
         height: 100%;
         box-sizing: border-box;
       }
@@ -33,18 +33,17 @@
         box-sizing: inherit;
       }
 
-      body {
-        position: relative;
-        margin: 0;
+      .root-container {
         min-height: 100%;
-      } 
+        height: 1px;
+      }
     </style>
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <div id="root"></div>
+    <div id="root" class="root-container"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

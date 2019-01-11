@@ -3,6 +3,7 @@ from applications.user.serializers import (
     UserSerializer
 )
 from applications.user.models import User
+from django.shortcuts import get_object_or_404
 from knox.auth import TokenAuthentication
 from knox.models import AuthToken
 from rest_framework import status
@@ -21,9 +22,10 @@ class RegistrationView(APIView):
         serializer = CreateUserSerializer(data=user_data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        serialized_user = UserSerializer(user)
 
         context = serializer.data
-        context.update({'token': AuthToken.objects.create(user)})
+        context.update({'token': AuthToken.objects.create(user), 'user': serialized_user.data})
 
         return Response(context, status=status.HTTP_201_CREATED)
 
@@ -35,21 +37,24 @@ class BasicLoginView(APIView):
         user_data = request.data
         serializer = LoginUserSerializer(data=user_data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
-
+        serialized_login_data = serializer.validated_data
+        user = User.objects.get(username=serialized_login_data.username)
+        serialized_user = UserSerializer(user)
         return Response({
-            'username': user.username,
+            'user': serialized_user.data,
             'token': AuthToken.objects.create(user),
         })
 
 
 class TokenCheckView(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
-    def post(self, request):
-        
+    def get(self, request):
+
+        user_serialized = UserSerializer(request.user)
         return Response({
-            'username': request.user.username,
+            'user': user_serialized.data,
             'isValid': True
         })
 

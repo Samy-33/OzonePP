@@ -6,7 +6,7 @@ class DynamicFieldModelSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         
-        fields_to_hide = kwargs.pop('fields_to_hide', None)
+        fields_to_hide = kwargs.get('context', {}).get('fields_to_hide', '')
 
         super(DynamicFieldModelSerializer, self).__init__(*args, **kwargs)
 
