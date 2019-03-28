@@ -4,6 +4,7 @@ import { Container, Form, FormGroup, Input,
 import LoadingOverlay from 'react-loading-overlay'
 import { NavBar as Navbar } from '../components/navbar/navbar'
 import { Footer } from '../components/footer/footer'
+import { Helmet } from 'react-helmet'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { signUserUp } from './actions'
@@ -18,6 +19,9 @@ const SignupPresent = (props) => {
   const requiredAsterisk = <font color="red">*</font>
   return (
     <div className="d-flex flex-column mb-3 auth-container">
+      <Helmet>
+        <title>Signup - OzonePP</title>
+      </Helmet>
       <div className="p-2">
         <Navbar />
       </div>

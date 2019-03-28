@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import { connect } from 'react-redux'
 import { NavBar as Navbar } from '../components/navbar/navbar'
 import { Footer } from '../components/footer/footer'
@@ -7,6 +8,8 @@ import { Nav, NavItem, NavLink, TabContent,
 import { ContestLi } from './components/contest-li'
 import  { Helmet } from 'react-helmet'
 import { withAuthentication } from '../hoc/with-authentication'
+import { loadAllContests } from './actions'
+
 import classnames from 'classnames'
 import './styles/contests-home.css'
 
@@ -32,15 +35,15 @@ const ContestsTabItem = (props) => {
 const ContestsTabContent = (props) => {
   return (
     <ListGroup>
-      {!props.contestsList && 
+      {_.isEmpty(props.contestsList) &&
         <Alert color="danger">
-          No Contests Available.
+          No Data for this category.
         </Alert>
       }
       {props.contestsList &&
         props.contestsList.map(contest => {
           return (
-            <ContestLi contest={contest}/>
+            <ContestLi key={contest.id} contest={contest}/>
           )
         })
       }
@@ -50,7 +53,7 @@ const ContestsTabContent = (props) => {
 
 const ContestsPresent = (props) => {
 
-  const { activeTab, changeSetTab } = props
+  const { activeTab, changeSetTab, upcomingContests, ongoingContests, pastContests } = props
 
   return (
     <div className="d-flex flex-column mb-3 contests-body-container">
@@ -68,13 +71,13 @@ const ContestsPresent = (props) => {
         </Nav>
         <TabContent activeTab={props.activeTab}>
           <TabPane tabId={ONGOING_CONTESTS_TAB}>
-            {<ContestsTabContent {...props} />}
+            {<ContestsTabContent contestsList={ongoingContests} />}
           </TabPane>
           <TabPane tabId={UPCOMING_CONTESTS_TAB}>
-            {<ContestsTabContent {...props} />}
+            {<ContestsTabContent contestsList={upcomingContests} />}
           </TabPane>
           <TabPane tabId={PAST_CONTESTS_TAB}>
-            {<ContestsTabContent {...props} />}
+            {<ContestsTabContent contestsList={pastContests} />}
           </TabPane>
         </TabContent>
       </div>
@@ -91,19 +94,10 @@ class Contests extends React.Component {
     super(props)
 
     this.state = {
-      activeTab: ONGOING_CONTESTS_TAB,
-      contestsList: [
-        {
-          id: 1,
-          code: "CODE",
-          name: "Code The Fuck Out",
-          description: "This is the description",
-          startTime: "2019-01-13T14:30Z",
-          endTime: "2019-01-13T16:30Z",
-          userRegistered: false
-        }
-      ]
+      activeTab: ONGOING_CONTESTS_TAB
     }
+
+    this.changeSetTab = this.changeSetTab.bind(this)
   }
 
   changeSetTab = (newTab) => {
@@ -112,10 +106,15 @@ class Contests extends React.Component {
     })
   }
 
+  componentDidMount = () => {
+    this.props.loadAllContests()
+  }
+
   render () {
 
     const propsToSend = {
       ...this.state,
+      ...this.props,
       changeSetTab: this.changeSetTab
     }
 
@@ -123,4 +122,9 @@ class Contests extends React.Component {
   }
 }
 
-export default withAuthentication(connect()(Contests))
+const mapStateToProps = ({contests:{pastContests, ongoingContests, upcomingContests}}) => ({
+  pastContests, ongoingContests, upcomingContests
+})
+const mapDispatchToProps = { loadAllContests }
+
+export default withAuthentication(connect(mapStateToProps, mapDispatchToProps)(Contests))

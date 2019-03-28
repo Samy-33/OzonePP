@@ -6,6 +6,7 @@ import { Footer } from '../components/footer/footer'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { HOME_EXACT_ROUTES } from '../config/constants'
+import { Helmet } from 'react-helmet'
 import LoadingOverlay from 'react-loading-overlay'
 import { logUserIn } from './actions'
 import './styles/auth.css'
@@ -16,6 +17,9 @@ const LoginPresent = (props) => {
 
   return (
     <div className="d-flex flex-column mb-3 auth-container">
+      <Helmet>
+        <title>Login - OzonePP</title>
+      </Helmet>
       <div className="p-2">
         <Navbar />
       </div>

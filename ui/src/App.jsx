@@ -3,31 +3,32 @@ import Routes from './routes'
 import { validateToken } from './auth/actions'
 import { connect } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import LoadingOverlay from 'react-loading-overlay'
 import Alert from 'react-s-alert'
-
+import { Throbber } from './components/throbber/throbber'
 import 'react-s-alert/dist/s-alert-default.css'
 import 'react-s-alert/dist/s-alert-css-effects/stackslide.css'
 import './App.css'
 
 class App extends React.Component {
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.validateToken()
   }
 
   render () {
+
+    if(this.props.validatingToken) {
+      return (
+        <Throbber type="spin" color="#0000ff" text="Validating Session..."/>
+      )
+    }
+
     return (
-      <LoadingOverlay
-        className="app-overlay"
-        active={this.props.validatingToken}
-        spinner
-        text="Validating Session"
-      >
+      <React.Fragment>
         <BrowserRouter>
           <Routes />
         </BrowserRouter>
         <Alert stack={{limit: 4}} effect="stackslide" position="bottom-right"/>
-      </LoadingOverlay>
+      </React.Fragment>
     )
   }
 }

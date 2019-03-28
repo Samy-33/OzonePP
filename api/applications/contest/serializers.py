@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Contest, ContestRegistration
+from .models import Contest, ContestRegistration, ContestAnnouncement
 from utils.serializer_utils import DynamicFieldModelSerializer
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -24,3 +24,9 @@ class ContestSerializer(DynamicFieldModelSerializer):
             return instance.registrations.filter(user=request.user).exists()
         
         return False
+
+
+class ContestAnnouncementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContestAnnouncement
+        fields = '__all__'

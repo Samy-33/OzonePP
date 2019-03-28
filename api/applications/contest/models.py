@@ -24,6 +24,12 @@ class Contest(models.Model):
     is_public = models.BooleanField(default=False)
     added_ts = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        db_table = 'contest'
+
+    def __str__(self):
+        return f'{self.code} - by {self.creator}'
+
     @staticmethod
     def get_ongoing_contests_in_queryset(queryset):
         now = timezone.now()
@@ -45,10 +51,35 @@ class ContestRegistration(models.Model):
     contest = models.ForeignKey(Contest, related_name='registrations', on_delete=models.CASCADE)
     added_ts = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        db_table = 'contest_registration'
+        unique_together = (('user', 'contest'),)
+
+    def __str__(self):
+        return f'{self.user} registered in {self.contest}'
+
+class ContestAnnouncement(models.Model):
+    contest = models.ForeignKey(Contest, related_name='announcements', on_delete=models.CASCADE)
+    announcer = models.ForeignKey(User, related_name='announced', null=True, on_delete=models.SET_NULL)
+    text = models.TextField(max_length=300)
+    added_ts = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'contest_announcement'
+
+    @staticmethod
+    def get_announcements_by_contest_code(contest_code):
+        return ContestAnnouncement.objects.filter(contest__code=contest_code)
 
 class Tag(models.Model):
     abbr = models.CharField(max_length=10, blank=False)
     name = models.CharField(max_length=20, blank=False)
+
+    class Meta:
+        db_table = 'tag'
+
+    def __str__(self):
+        return f'{self.abbr} means {self.name}'
 
 
 class CodeProblem(models.Model):
@@ -65,6 +96,12 @@ class CodeProblem(models.Model):
                                              default=512.0)
     added_ts = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        db_table = 'code_problem'
+
+    def __str__(self):
+        return f'{self.code} by {self.author}'
+
 
 class MCQProblem(models.Model):
     author = models.ForeignKey(User, related_name='mcq_problems', null=True, on_delete=models.SET_NULL)
@@ -74,6 +111,12 @@ class MCQProblem(models.Model):
     multiple_correct = models.BooleanField(default=False)
     added_ts = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        db_table = 'mcq_problem'
+
+    def __str__(self):
+        return f'{self.code} by {self.author}'
+
 
 class MCQOption(models.Model):
     problem = models.ForeignKey(MCQProblem, related_name='choices', on_delete=models.CASCADE)
@@ -81,9 +124,11 @@ class MCQOption(models.Model):
     is_correct = models.BooleanField(default=False)
     added_ts = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        db_table = 'mcq_option'
+
 
 class CodeSubmission(models.Model):
-
     submittor = models.ForeignKey(User, related_name='code_submisssions', on_delete=models.CASCADE)
     problem = models.ForeignKey(CodeProblem, related_name='submissions', on_delete=models.CASCADE)
     solution = models.TextField(max_length=2000, blank=False)
@@ -93,6 +138,9 @@ class CodeSubmission(models.Model):
                               choices=((choice, choice.value) for choice in StatusChoice))
     remark = models.CharField(max_length=100, blank=True)
     added_ts = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'code_submission'
 
 
 class MCQSubmission(models.Model):
@@ -110,8 +158,14 @@ class MCQSubmission(models.Model):
                               choices=((choice, choice.value) for choice in StatusChoice))
     added_ts = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        db_table = 'mcq_submission'
+
 
 class Ranking(models.Model):
     contest = models.ForeignKey(Contest, related_name='user_rank', on_delete=models.CASCADE)
     participant = models.ForeignKey(User, related_name='rank', on_delete=models.CASCADE)
     position = models.IntegerField()
+
+    class Meta:
+        db_table = 'ranking'

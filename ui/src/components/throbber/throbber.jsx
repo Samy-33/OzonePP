@@ -2,12 +2,11 @@ import React from 'react'
 import ReactLoading from 'react-loading'
 import './style.css'
 
-const throbber = (props) => {
+export const Throbber = ({type, color, text}) => {
   return (
     <div className="throbber">
-      <ReactLoading type="spinningBubbles" color="#000"></ReactLoading>
+      <ReactLoading type={type} color={color}/>
+      {text}
     </div>
   )
 }
-
-export default throbber

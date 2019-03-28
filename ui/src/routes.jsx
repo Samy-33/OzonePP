@@ -10,13 +10,13 @@ export default class Routes extends React.Component {
   render () {
     return (
       <Switch>
-        <Route exact path={["", "/"]} component={Home} />
+        <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
         <Route path="/signup" component={Signup} />
         <Route path="/contests" component={ContestsRoutes} />
-        <Route path="/practice" component="" />
-        <Route path="/resources" component="" />
+        {/* <Route path="/practice" component="" />
+        <Route path="/resources" component="" /> */}
       </Switch>
     )
   }

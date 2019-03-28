@@ -1,0 +1,2 @@
+[run]
+omit=~/.envs/ozonepp/*,./venv/*,./.env/*,manage.py,**/__init__.py,**/migrations/*,**/__pycache__/*

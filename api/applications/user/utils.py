@@ -21,13 +21,13 @@ class UserConstants:
 		1899: (ColorConstants.BLUE, '#0131e3'),
 		2099: (ColorConstants.PURPLE, '#d201e3'),
 		2399: (ColorConstants.ORANGE, '#ff8b1e'),
-		8000: (ColorConstants.RED, '#f01c1c')
+		3000: (ColorConstants.RED, '#f01c1c')
 	}.items()))
 
 
 def color_code_from_rating(rating: int):
 	
-	if rating > 8000:
+	if rating > 3000:
 		return '#f01c1c'
 
 	for t_rating, t_color in UserConstants.rating_to_role_map.items():

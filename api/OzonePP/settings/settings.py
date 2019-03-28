@@ -44,7 +44,9 @@ DJANGO_APPS = [
 
 DEPENDENCY_APPS = [
     'rest_framework',
-    'knox'
+    'rest_framework.authtoken',
+    'knox',
+    'coverage'
 ]
 
 PROJECT_APPS = [

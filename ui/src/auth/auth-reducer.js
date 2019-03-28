@@ -72,11 +72,13 @@ export const authReducer = (state=initialState, action) => {
     }
 
     case TOKEN_VALIDATION_SUCCESS: {
+      const token = localStorage.getItem(AUTH_TOKEN_KEY)
+
       return {
         ...state,
         validatingToken: false,
         userLoggedIn: true,
-        userToken: action.payload.token,
+        userToken: token,
         user: action.payload.user
       }
     }
@@ -84,6 +86,7 @@ export const authReducer = (state=initialState, action) => {
     case USER_LOGIN_SUCCESS: {
       localStorage.setItem(AUTH_TOKEN_KEY, action.payload.token)
       return {
+        ...state,
         authLoading: false,
         loginErrs: {},
         signupErrs: {},
@@ -112,10 +115,12 @@ export const authReducer = (state=initialState, action) => {
     }
 
     case TOKEN_VALIDATION_FAILURE: {
+      localStorage.removeItem(AUTH_TOKEN_KEY)
       return {
         ...state,
         validatingToken:false,
-        userLoggedIn: false
+        userLoggedIn: false,
+        userToken: null
       }
     }
 
